@@ -23,8 +23,9 @@ function App() {
       if(user){
         console.log("logged in")
         setUser(user)
-        navigate('/')
+        
       }else{
+        navigate('/login') 
         console.log("not logged")
         
       }
