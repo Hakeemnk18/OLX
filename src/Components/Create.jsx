@@ -1,10 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Create.css';
 import Header from './Header';
 import { toast } from 'react-toastify';
 import { AuthContext, FireBaseContext } from '../store/FirbaseContext';
 import axios from "axios";
 import { addDoc, collection } from 'firebase/firestore';
+
 
 
 
@@ -16,6 +18,7 @@ const Create = () => {
   const [uploading, setUploading] = useState(false);
   const {auth,db} = useContext(FireBaseContext)
   const {user} = useContext(AuthContext)
+  const navigate = useNavigate()
   const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dijkesgb1/image/upload";
   
 
@@ -55,6 +58,7 @@ const Create = () => {
         createdAt:new Date().toString()
       })
       console.log("created")
+      navigate('/')
     } catch (error) {
       console.log(error.message)
       let errorCode = error.message.match(/\((.*?)\)/)?.[1] || "unknown-error";

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {useEffect,useContext,useState} from 'react';
 import Heart from '../assets/Heart';
 import './Posts.css';
 
