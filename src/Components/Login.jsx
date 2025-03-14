@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
 
-import Logo from '../../olx-logo.png';
+import Logo from '../../src/olx-logo.png';
 import './Login.css';
+import { FireBaseContext } from '../store/FirbaseContext';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Link } from 'react-router-dom';
 
 function Login() {
+
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+
+  const {auth,db} = useContext(FireBaseContext)
+
+  async function userValidate(e){
+      try {
+        
+        e.preventDefault()
+        await signInWithEmailAndPassword(auth,email,password)
+        console.log("validate user")
+      } catch (error) {
+        let errorCode = error.message.match(/\((.*?)\)/)?.[1] || "unknown-error";
+        errorCode = errorCode.slice(5)
+        toast.error(errorCode);
+      }
+  }
   return (
     <div>
       <div className="loginParentDiv">
@@ -14,9 +36,8 @@ function Login() {
           <input
             className="input"
             type="email"
-            id="fname"
-            name="email"
-            defaultValue="John"
+            value={email}
+            onChange={(e)=> setEmail(e.target.value)}
           />
           <br />
           <label htmlFor="lname">Password</label>
@@ -24,15 +45,14 @@ function Login() {
           <input
             className="input"
             type="password"
-            id="lname"
-            name="password"
-            defaultValue="Doe"
+            value={password}
+            onChange={(e)=> setPassword(e.target.value)}
           />
           <br />
           <br />
-          <button>Login</button>
+          <button type='submit' onClick={userValidate}>Login</button>
         </form>
-        <a>Signup</a>
+        <Link to={'/signup'}><a>Signup</a></Link>
       </div>
     </div>
   );

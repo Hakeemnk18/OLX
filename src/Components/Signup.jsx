@@ -1,9 +1,12 @@
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
-
+import { toast } from 'react-toastify';
 import Logo from '../../src/olx-logo.png';
 import './Signup.css';
+import {FireBaseContext} from '../store/FirbaseContext';
+import { createUserWithEmailAndPassword ,updateProfile} from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
 
 export default function Signup() {
     const [name,setName] = useState('')
@@ -11,14 +14,33 @@ export default function Signup() {
     const [phone,setPhon] = useState('')
     const [password,setPassword] = useState('')
 
+    const {auth,db} = useContext(FireBaseContext)
     
-    function sumbmit(e){
-        e.preventDefault()
-        console.log("inside submit")
-        console.log("name "+name)
-        console.log("phone "+phone)
-        console.log("email "+email)
-        console.log("password "+password)
+
+
+    async function sumbmit(e){
+        try {
+            e.preventDefault()
+            const res = await createUserWithEmailAndPassword(auth,email,password)
+            console.log("submitted")
+            const user = res.user
+            await updateProfile(user, {
+              displayName: name
+          });
+            await addDoc(collection(db,"user"),{
+                uid : user.uid,
+                name,
+                authProvider : "local",
+                email,
+            })
+            console.log("add doc")
+        } catch (error) {
+            let errorCode = error.message.match(/\((.*?)\)/)?.[1] || "unknown-error";
+            errorCode = errorCode.slice(5)
+            toast.error(errorCode);
+        }
+        
+        
     }
   return (
     <div>
