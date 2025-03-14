@@ -1,12 +1,30 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './Header.css';
 import OlxLogo from '../assets/OlxLogo';
 import Search from '../assets/Search';
 import Arrow from '../assets/Arrow';
 import SellButton from '../assets/SellButton';
 import SellButtonPlus from '../assets/SellButtonPlus';
+import { AuthContext } from '../store/FirbaseContext';
+import { toast } from 'react-toastify';
+import { signOut } from 'firebase/auth';
+import { FireBaseContext } from '../store/FirbaseContext';
+import { Link } from 'react-router-dom';
 
 function Header() {
+
+    const {user}  = useContext(AuthContext)
+    const {auth} = useContext(FireBaseContext)
+
+    const logout = async ()=>{
+      try {
+          signOut(auth)
+      } catch (error) {
+        let errorCode = error.message.match(/\((.*?)\)/)?.[1] || "unknown-error";
+        errorCode = errorCode.slice(5)
+        toast.error(errorCode);
+      }
+    }
     return (
       <div className="headerParentDiv">
         <div className="headerChildDiv">
@@ -34,10 +52,11 @@ function Header() {
             <Arrow></Arrow>
           </div>
           <div className="loginPage">
-            <span>Login</span>
+            {user ? <span>{user.displayName || "user"}</span> : <Link to={'/login'}><span>Login</span></Link>}
             <hr />
+           
           </div>
-  
+          {user ? <span onClick={logout} className='logout-btn'>Logout</span> : <></>}
           <div className="sellMenu">
             <SellButton></SellButton>
             <div className="sellMenuContent">
