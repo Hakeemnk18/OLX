@@ -11,10 +11,13 @@ import { signOut } from 'firebase/auth';
 import { FireBaseContext } from '../store/FirbaseContext';
 import { Link } from 'react-router-dom';
 
+
 function Header() {
 
     const {user}  = useContext(AuthContext)
     const {auth} = useContext(FireBaseContext)
+    
+    
 
     const logout = async ()=>{
       try {

@@ -4,7 +4,6 @@ import './Create.css';
 import Header from './Header';
 import { toast } from 'react-toastify';
 import { AuthContext, FireBaseContext } from '../store/FirbaseContext';
-import axios from "axios";
 import { addDoc, collection } from 'firebase/firestore';
 
 
@@ -55,6 +54,7 @@ const Create = () => {
         category,
         price,
         image_url,
+        userId:auth.currentUser.uid,
         createdAt:new Date().toString()
       })
       console.log("created")

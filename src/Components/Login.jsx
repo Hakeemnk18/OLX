@@ -51,6 +51,7 @@ function Login() {
             name,
             authProvider : "local",
             email,
+            phone
         })
         console.log("add doc")
         navigate('/')

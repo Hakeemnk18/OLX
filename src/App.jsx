@@ -7,6 +7,8 @@ import{ AuthContext, FireBaseContext} from './store/FirbaseContext'
 import Login from './Components/Login'
 import { ToastContainer,toast } from 'react-toastify'
 import CreatePage from './Pages/Create'
+import ViewPost from './Pages/ViewPost'
+import Post from './store/PostContext'
 
 
 
@@ -38,12 +40,18 @@ function App() {
   return (
     <>
       <ToastContainer theme='dark' />
-      <Routes>
-        <Route path='/' element={<Home/>} />
-        <Route path='/signup' element={<SignupPage/>} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/create' element={<CreatePage />} />
-      </Routes>
+      <Post>
+        <Routes>
+          
+            <Route path='/' element={<Home/>} />
+            <Route path='/signup' element={<SignupPage/>} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/create' element={<CreatePage />} />
+            <Route path='/view' element={<ViewPost />} />
+          
+          
+        </Routes>
+      </Post>
 
       
     </>
