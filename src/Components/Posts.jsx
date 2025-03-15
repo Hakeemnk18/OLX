@@ -4,12 +4,16 @@ import Heart from '../assets/Heart';
 import './Posts.css';
 import { FireBaseContext } from '../store/FirbaseContext';
 import { collection, getDoc, getDocs } from 'firebase/firestore';
+import { PostContext } from '../store/PostContext';
+import { useNavigate } from 'react-router-dom';
 
 
 function Posts() {
 
   const{auth,db} = useContext(FireBaseContext)
   const [products,setProducts] = useState([])
+  const {setProductDetails} = useContext(PostContext)
+  const navigate = useNavigate()
 
   useEffect(()=>{
     getProduct()
@@ -25,9 +29,12 @@ function Posts() {
       }
     })
     setProducts(productList)
-    //console.log(productList)
+    
   }
-
+  const handleClick = () => {
+    
+    navigate("/view"); 
+  };
   
 
   return (
@@ -44,6 +51,10 @@ function Posts() {
             return (
               <div
                 className="card"
+                onClick={()=> {
+                  setProductDetails(product)
+                  handleClick()
+                }}
               >
                 <div className="favorite">
                   <Heart></Heart>
@@ -57,7 +68,7 @@ function Posts() {
                   <p className="name"> {product.name}</p>
                 </div>
                 <div className="date">
-                  <span>{product.createdAt.slice(4,15)}</span>
+                  <span>{product?.createdAt?.slice(4,15)}</span>
                 </div>
               </div>
             )
